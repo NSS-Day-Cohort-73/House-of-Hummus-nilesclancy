@@ -56,10 +56,17 @@ sequenceDiagram
 > 🧨 Before you click the "Assessment Complete" button on the Learning Platform, add your answers below for each question and make a commit. It is your option to request a face-to-face meeting with a coach for a vocabulary review.
 
 1. Should transient state be represented in a database diagram? Why, or why not?
-   > Your answer here
+
+   > No, transient state does not need to be represented in a database diagram because its purpose is simply to hold all of the temporary application data present when the user interacts with the app. Since it is cleared immediately after a transaction, and does not remain in permanent storage, it can remain absent from a database diagram.
+
 2. In the **FoodTruck** module, you are **await**ing the invocataion of all of the component functions _(e.g. sales, veggie options, etc.)_. Why must you use the `await` keyword there? Explain what happens if you remove it.
-   > Your answer here
+
+   > The "await" statement is a keyword often used in asynchronous functions to wait for a given API function call before executing the remaining code of the function. If the "await" keyword were removed, the program would execute entirely before receiving the necessary information from the API, causing purchases to never be saved correctly, or the UI not to update in response to user choices.
+
 3. When the user is making choices by selecting radio buttons, explain how that data is retained so that the **Purchase Combo** button works correctly.
-   > Your answer here
+
+   > When the user makes their selections using the radio buttons for entrees, sides, and vegetables, each of these selections are stored in the following functions in transientState.js; getSideSelection(), getEntreeSelection(), and getVegetableSelection(). These accessor functions are responsible for retrieving the stored food object ids from storeSelectedSide(), storeSelectedEntree(), and storeSelectedVegetable() [which temporarily hold the user's food object selections after their respective eventListener captures the relevant object ids]. In order to make the purchase, the accessor functions then retrive the stored food object selections once the "Purchase Combo" button is clicked.
+
 4. You used the `map()` array method in the self assessment _(at least, you should have since it is a learning objective)_. Explain why that function is helpful as a replacement for a `for..of` loop.
-   > Your answer here
+
+   > The map() or filter() function is helpful as a replacement for a for...of loop --when array filtering is necessary-- for two main reasons. Firstly, it is a far more efficient way of setting up an array filtering function with whatever logic is necessary, and automatically returning a new filtered array, as opposed to creating an empty array in a for...of loop that objects are pushed into during the function's execution. Secondly, this function produces a transformed array of the same length as the original that is both easier to modify and works better as a return value for rendering HTML elements. 
