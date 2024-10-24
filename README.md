@@ -24,11 +24,11 @@
 
 1. When the user selects an item in any of the three columns, the choice should be stored as transient state.
 1. When a user makes a choice for all three kinds of food, and then clicks the "Purchase Combo" button, a new sales object should be...
-    1. Stored as permanent state in your local API.
-    1. Represented as HTML below the **Monthly Sales** header in the following format **_exactly_**. Your output will not have zeroes, but the actual amount.
-        ```html
-        Receipt #1 = $00.00
-        ```
+   1. Stored as permanent state in your local API.
+   1. Represented as HTML below the **Monthly Sales** header in the following format **_exactly_**. Your output will not have zeroes, but the actual amount.
+      ```html
+      Receipt #1 = $00.00
+      ```
    1. The user's choices should be cleared from transient state once the purchase is made.
 
 ## Design
@@ -36,8 +36,76 @@
 Given the description and animation above...
 
 1. Create an ERD for this application before you begin.
+   > in-project
 1. Make a list of what modules need to be created to make your application as modular as possible. Create a **Dependency Graph** for the project to be reviewed once you are complete with the assessment.
+   > External miro page: https://miro.com/welcomeonboard/YmdhVVl5NWxMVXZWSHZSNHNsTUVIWW1VNU5vaFcyRDJ6SUY5SEdlR1VqeTFGS3Y0YjVuUkhTYlN4WndXV3BvR3wzNDU4NzY0NjAwNTIxOTA5NjU2fDI=?share_link_id=538051504135
 1. Create a **Sequence Diagram** that visualizes what your algorithm is for this project. We'll give you a minimal starting point.
+   > made on sequencediagram.org, needs updates to match the final function names I chose but the logic of the project's control flow is highly consistent. You can re-create it by pasting the following logic into the site's shell:
+   > title <size:35> <color #navy> **House of Hummus**
+
+entryspacing 0.4
+
+frame #wheat Sequence Diagram: Self Assesment 4
+
+participantgroup #grey \*\*scripts
+
+participant main.js
+participant dishes.js
+participant vegetables.js
+participant sideDishes.js
+participant transientState.js
+participant sales.js
+
+end
+
+participantgroup #orange API
+
+participant database.json
+
+end
+
+note over main.js:renders UI, \n initiates data fetches, \n handles button clicks
+note over dishes.js:provides available dish options, \n such as hummus flavors
+note over vegetables.js:provides vegetable choices, \n such as cucumber or carrots
+note over sideDishes.js:provides available side dishes
+note over transientState.js: holds the dish, vegetable, \n and side dish selections temporarily
+note over database.json:handles data persistence \n and saves the order to\n the database
+note over sales.js: displays purchase receipts, \n including total price
+
+main.js-#blue>dishes.js: getDishOptions()
+dishes.js--#blue>main.js:return dish options
+
+main.js-#red>vegetables.js: getVegetableOptions()
+vegetables.js--#red>main.js:return vegetable options
+
+main.js-#green>sideDishes.js: getSideDishOptions()
+sideDishes.js--#green>main.js:return side dish options
+
+loop #indigo
+main.js->main.js:Render dish, vegetable, and sideDish options
+end
+
+dishes.js-#lightblue>transientState.js: storeDishSelection(dish)
+transientState.js--#lightblue>dishes.js:return dish selection data
+
+vegetables.js-#pink>transientState.js: storeVegetableSelection(vegetable)
+transientState.js--#pink>vegetables.js: Vegetable selection stored
+
+sideDishes.js-#lightgreen>transientState.js:storeSideDishSelection(side_dish)
+transientState.js--#lightgreen>sideDishes.js:Side dish selection stored
+
+main.js-#white>transientState.js: getSelections()
+
+transientState.js--#white>main.js:return dish, vegetable, side dish selection
+
+main.js-#orange>database.json:saveOrder({dish, vegetable, side_dish})
+database.json--#orange>main.js:Order saved, return receipt id and price
+
+main.js->sales.js: displayReceipt(receipt_id, price)
+sales.js-->main.js: Receipt rendered
+
+main.js-#wheat>transientState.js: clearSelections()
+transientState.js--#wheat>main.js: Selections cleared
 
 ```mermaid
 sequenceDiagram
@@ -69,4 +137,4 @@ sequenceDiagram
 
 4. You used the `map()` array method in the self assessment _(at least, you should have since it is a learning objective)_. Explain why that function is helpful as a replacement for a `for..of` loop.
 
-   > The map() or filter() function is helpful as a replacement for a for...of loop --when array filtering is necessary-- for two main reasons. Firstly, it is a far more efficient way of setting up an array filtering function with whatever logic is necessary, and automatically returning a new filtered array, as opposed to creating an empty array in a for...of loop that objects are pushed into during the function's execution. Secondly, this function produces a transformed array of the same length as the original that is both easier to modify and works better as a return value for rendering HTML elements. 
+   > The map() or filter() function is helpful as a replacement for a for...of loop --when array filtering is necessary-- for two main reasons. Firstly, it is a far more efficient way of setting up an array filtering function with whatever logic is necessary, and automatically returning a new filtered array, as opposed to creating an empty array in a for...of loop that objects are pushed into during the function's execution. Secondly, this function produces a transformed array of the same length as the original that is both easier to modify and works better as a return value for rendering HTML elements.

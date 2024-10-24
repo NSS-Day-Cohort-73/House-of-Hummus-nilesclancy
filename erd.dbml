@@ -1,16 +1,16 @@
-Table Dish {
+Table Entrees {
+    id int [pk, increment]
+     name varchar
+    price number
+}
+
+Table Vegetables {
     id int [pk, increment]
     name varchar
     price number
 }
 
-Table Vegetable {
-    id int [pk, increment]
-    name varchar
-    price number
-}
-
-Table SideDish {
+Table SideDishes {
     id int [pk, increment]
     name varchar
     price number
@@ -18,8 +18,8 @@ Table SideDish {
 
 Table Sales {
     id int [pk, increment]
-    dish_id int [ref: > Dish.id]
-    vegetable_id int [ref: > Vegetable.id]
-    side_dish_id int [ref: > SideDish.id]
+    dish_id int [ref: > Entrees.id]
+    vegetable_id int [ref: > Vegetables.id]
+    side_dish_id int [ref: > SideDishes.id]
     total_price number
 }
