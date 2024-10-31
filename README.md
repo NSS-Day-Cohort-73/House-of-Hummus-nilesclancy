@@ -130,6 +130,7 @@ sequenceDiagram
 2. In the **FoodTruck** module, you are **await**ing the invocataion of all of the component functions _(e.g. sales, veggie options, etc.)_. Why must you use the `await` keyword there? Explain what happens if you remove it.
 
    > The "await" statement is a keyword often used in asynchronous functions to wait for a given API function call before executing the remaining code of the function. If the "await" keyword were removed, the program would execute entirely before receiving the necessary information from the API, causing purchases to never be saved correctly, or the UI not to update in response to user choices.
+   > // distinguish between immidiate and later returns
 
 3. When the user is making choices by selecting radio buttons, explain how that data is retained so that the **Purchase Combo** button works correctly.
 

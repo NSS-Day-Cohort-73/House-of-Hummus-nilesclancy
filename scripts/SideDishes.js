@@ -1,9 +1,9 @@
-import { transientState } from "./transientState.js";
+import { sideChangeEvent } from "./transientState.js";
 
-export const Sides = () => {
+export const SideDishes = async () => {
   let sidesHTML = "";
 
-  fetch("http://localhost3000/api/database.json")
+  await fetch("http://localhost:8080/sides")
     .then((response) => response.json())
     .then((data) => {
       const sides = data.sides;
@@ -25,13 +25,13 @@ export const Sides = () => {
       document.querySelectorAll('input[name="sideDish"]').forEach((input) => {
         input.addEventListener("change", (event) => {
           const select = event.target.value;
-          transientState.storeSelectedSide(select);
+          sideChangeEvent(event.target.value);
         });
       });
 
       sidesHTML = document.querySelector("choices__sides").innerHTML;
-    })
-    .catch((error) => console.error("Side selection error", error));
+    });
+  // .catch((error) => console.error("Side selection error", error));
 
   return sidesHTML;
 };

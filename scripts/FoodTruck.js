@@ -2,15 +2,15 @@ import { Sales } from "./Sales.js";
 import { Entrees } from "./Entrees.js";
 import { Vegetables } from "./Vegetables.js";
 import { SideDishes } from "./SideDishes.js";
-import TransientState from "./transientState.js";
+import { getAllSelections } from "./transientState.js";
 
 export const FoodTruck = async () => {
-  const salesHTML = await Sales();
   const entreesHTML = Entrees();
-  const vegetablesHTML = Vegetables();
   const sidesHTML = SideDishes();
+  const salesHTML = await Sales();
+  const vegetablesHTML = Vegetables();
 
-  return `
+  const hummusHTML = `
         <header class="header">
             <img src="./images/hummus.png" class="logo" />
             <h1 class="title">Laura Kathryn's House of Hummus</h1>
@@ -37,41 +37,45 @@ export const FoodTruck = async () => {
             ${salesHTML}
         </article>
     `;
-};
 
-document.addEventListener("DOMContentLoaded", () => {
+  document.querySelector("#container").innerHTML = hummusHTML;
+
   document.getElementById("purchase").addEventListener("click", async () => {
-    const selectedEntree = TransientState.getDishSelection();
-    const selectedVegetable = TransientState.getVegetableSelection();
-    const selectedSide = TransientState.getSideDishSelection();
+    const selections = await getAllSelections();
 
-    if (selectedEntree && selectedVegetable && selectedSide) {
-      const totalPrice = (
-        parseFloat(selectedEntree.price) +
-        parseFloat(selectedVegetable.price) +
-        parseFloat(selectedSide.price)
-      ).toFixed(2);
-
-      const newPurchase = {
-        entree_id: selectedEntree,
-        vegetable_id: selectedVegetable,
-        side_dish_id: selectedSide,
-        total_price: totalPrice,
+    if (
+      selections.selectedEntree &&
+      selections.selectedVegetable &&
+      selections.selectedSide
+    ) {
+      const newTransaction = {
+        entree_id: selections.selectedEntree,
+        vegetable_id: selections.selectedVegetable,
+        side_dish_id: selections.selectedSide,
+        total_price: (
+          selections.selectedEntree +
+          selections.selectedVegetable +
+          selections.selectedSide
+        ).toFixed(2),
       };
 
-      await TransientState.savePurchase(newPurchase);
-      TransientState.clearSelections();
+      await fetch("http://localhost:8080/purchases", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newTransaction),
+      });
 
       const updatedSalesHTML = await Sales();
-
       document.querySelector(".customerOrders").innerHTML = `
                 <h2>Monthly Sales</h2>
                 ${updatedSalesHTML}
             `;
     } else {
-      alert(
-        "Please select an entree, vegetable, and side before making a purchase!"
-      );
+      console.log("Please select an entree, vegetable, and side.");
     }
   });
-});
+
+  return hummusHTML;
+};

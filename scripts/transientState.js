@@ -1,50 +1,77 @@
-export const transientState = (() => {
-  let selectedEntree = null;
-  let selectedVegetable = null;
-  let selectedSide = null;
+const transientState = {
+  selectedSide: 0,
+  selectedEntree: 0,
+  selectedVegetable: 0,
+};
 
-  const storeDishSelection = (entreeId) => {
-    selectedEntree = entreeId;
-  };
+export const sideChangeEvent = (num) => {
+  transientState.selectedSide = parseInt(num);
+};
 
-  const storeVegetableSelection = (vegetableId) => {
-    selectedVegetable = vegetableId;
-  };
+export const entreeChangeEvent = (num) => {
+  transientState.selectedEntree = parseInt(num);
+};
 
-  const storeSideDishSelection = (sideDishId) => {
-    selectedSide = sideDishId;
-  };
+export const vegetableChangeEvent = (num) => {
+  transientState.selectedVegetable = parseInt(num);
+};
 
-  const getDishSelection = () => selectedEntree;
-  const getVegetableSelection = () => selectedVegetable;
-  const getSideDishSelection = () => selectedSide;
+export const getAllSelections = async () => {
+  return transientState, console.log(transientState);
+};
 
-  const savePurchase = (purchase) => {
-    return fetch("http://localhost:3000/api/database.json", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(purchase),
-    })
-      .then((response) => response.json())
-      .catch((error) => console.error("Error saving purchase:", error));
-  };
+// const transientState = (() => {
+//   // creates immediately invoked function
+//   let selectedEntree = null;
+//   let selectedVegetable = null;
+//   let selectedSide = null;
 
-  const clearSelections = () => {
-    selectedEntree = null;
-    selectedVegetable = null;
-    selectedSide = null;
-  };
+//   const storeDishSelection = (entreeId) => {
+//     selectedEntree = entreeId;
+//   };
 
-  return {
-    storeDishSelection,
-    storeVegetableSelection,
-    storeSideDishSelection,
-    getDishSelection,
-    getVegetableSelection,
-    getSideDishSelection,
-    savePurchase,
-    clearSelections,
-  };
-})();
+//   const storeVegetableSelection = (vegetableId) => {
+//     selectedVegetable = vegetableId;
+//   };
+
+//   const storeSideDishSelection = (sideDishId) => {
+//     selectedSide = sideDishId;
+//   };
+
+//   const getDishSelection = () => selectedEntree;
+//   const getVegetableSelection = () => selectedVegetable;
+//   const getSideDishSelection = () => selectedSide;
+
+//   const savePurchase = (purchase) => {
+//     return fetch("http://localhost:3000/api/database.json", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(purchase),
+//     })
+//       .then((response) => response.json())
+//       .catch((error) => console.error("Error saving purchase:", error));
+//   };
+
+//   const clearSelections = () => {
+//     selectedEntree = null;
+//     selectedVegetable = null;
+//     selectedSide = null;
+//   };
+
+//   return {
+//     storeDishSelection,
+//     storeVegetableSelection,
+//     storeSideDishSelection,
+//     getDishSelection,
+//     getVegetableSelection,
+//     getSideDishSelection,
+//     savePurchase,
+//     clearSelections,
+//   };
+// })();
+
+// export default transientState;
+
+// // rebuild in accordance with the way that kneel-diamonds is built.

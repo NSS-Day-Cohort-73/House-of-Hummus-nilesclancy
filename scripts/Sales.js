@@ -1,7 +1,7 @@
-export const Sales = () => {
+export const Sales = async () => {
   let salesHTML = "";
 
-  fetch("http://localhost:3000/api/database.json")
+  await fetch("http://localhost:8080/purchases")
     .then((response) => response.json())
     .then((data) => {
       const sales = data.purchases;
@@ -22,8 +22,8 @@ export const Sales = () => {
       }
 
       document.querySelector(".customerOrders").innerHTML = salesHTML;
-    })
-    .catch((error) => console.error("Error fetching sales:", error));
+    });
+  // .catch((error) => console.error("Error fetching sales:", error));
 
   return salesHTML;
 };

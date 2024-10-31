@@ -1,9 +1,9 @@
-import { transientState } from "./transientState";
+import { vegetableChangeEvent } from "./transientState.js";
 
-export const Vegetables = () => {
+export const Vegetables = async () => {
   let vegetablesHTML = "";
 
-  fetch("http://localhost:3000/api/database.json")
+  await fetch("http://localhost:8080/vegetables") //use await in this instance
     .then((response) => response.json())
     .then((data) => {
       const veggies = data.veggies;
@@ -25,13 +25,13 @@ export const Vegetables = () => {
       document.querySelectorAll('input[name="vegetable"]').forEach((input) => {
         input.addEventListener("change", (event) => {
           const select = event.target.value;
-          transientState.storeSelectedVegetable(select);
+          vegetableChangeEvent(event.target.value);
         });
 
         document.querySelector(".choices__veggies").innerHTML = vegetablesHTML;
       });
-    })
-    .catch((error) => console.error("error fetching veggies", error));
+    });
+  // .catch((error) => console.error("error fetching veggies", error));
 
   return vegetablesHTML;
 };

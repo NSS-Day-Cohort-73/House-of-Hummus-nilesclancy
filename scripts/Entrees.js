@@ -1,10 +1,10 @@
-import { transientState } from "./transientState.js";
+import { entreeChangeEvent } from "./transientState.js";
 
-export const Entrees = () => {
+export const Entrees = async () => {
   let entreesHTML = "";
 
-  fetch("http://localhost:3000/api/database.json")
-    .then((response = response.json()))
+  await fetch("http://localhost:8080/entrees")
+    .then((response) => response.json())
     .then((data) => {
       const entrees = data.entrees;
 
@@ -23,9 +23,9 @@ export const Entrees = () => {
         .join("");
 
       document.querySelectorAll("input[name=entree]").forEach((input) => {
-        input.addEventListener("change", (even) => {
+        input.addEventListener("change", (event) => {
           const select = event.target.value;
-          transientState.storeSelectedEntree;
+          entreeChangeEvent(event.target.value);
         });
       });
 
